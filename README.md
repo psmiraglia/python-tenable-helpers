@@ -17,7 +17,7 @@ EOF
 
 Obtain information about linked agents.
 
-~~~
+~~~.bash
 $ ./agents-info.py -h
 usage: agents-info.py [-h] [--never-connect] [--plugins-never-update]
                       [--agent-group-id AGENT_GROUP_ID]
@@ -31,6 +31,32 @@ optional arguments:
   --agent-group-id AGENT_GROUP_ID
                         specify the agent group to get the agents from
 
+~~~
+
+Example of execution
+
+~~~.bash
+$ ./agents-info.py --never-connect --plugins-never-update --agent-group-id 123456
+[never_connect] Start analysis
+[never_connect] 6 agents
+[never_connect] Result saved: never_connect.123456.20220720180812.csv
+[plugins_never_update] Start analysis
+[plugins_never_update] 164 agents
+[plugins_never_update] Result saved: plugins_never_update.123456.20220720180812.csv
+~~~
+
+~~~.bash
+$ ./agents-info.py --never-connect --plugins-never-update
+[1] Server (id: 654321)
+[2] Client (id: 123456)
+[3] DMZ (id: 112233)
+[<] Select the agent group (1-3): 2
+[never_connect] Start analysis
+[never_connect] 6 agents
+[never_connect] Result saved: never_connect.123456.20220720180812.csv
+[plugins_never_update] Start analysis
+[plugins_never_update] 164 agents
+[plugins_never_update] Result saved: plugins_never_update.123456.20220720180812.csv
 ~~~
 
 ## References
