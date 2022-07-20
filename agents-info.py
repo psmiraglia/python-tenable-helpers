@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
             if len(rows) > 0:
                 # save result to file
-                out_file = f'{arg}.{now}.csv'
+                out_file = f'{arg}.{gid}.{now}.csv'
                 with open(out_file, 'w') as fd:
                     commons.as_csv(fd, headline, rows)
                     fd.close()
