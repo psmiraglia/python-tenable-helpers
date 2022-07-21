@@ -21,6 +21,7 @@ Obtain information about linked agents.
 $ ./agents-info.py -h
 usage: agents-info.py [-h] [--never-connect] [--plugins-never-update]
                       [--agent-group-id AGENT_GROUP_ID]
+                      [--agent-group-name AGENT_GROUP_NAME]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -30,7 +31,9 @@ optional arguments:
                         linking
   --agent-group-id AGENT_GROUP_ID
                         specify the agent group to get the agents from
-
+  --agent-group-name AGENT_GROUP_NAME
+                        specify the agent group to get the agents from
+                        (ignored if --agent-group-id is used)
 ~~~
 
 Example of execution

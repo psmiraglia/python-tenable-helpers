@@ -22,6 +22,7 @@ SOFTWARE.
 import argparse
 import datetime
 import logging
+import sys
 import time
 
 from tenable.io import TenableIO
@@ -76,17 +77,44 @@ if __name__ == '__main__':
                    help='list agents that never had pluging update after the linking')  # noqa
     p.add_argument('--agent-group-id', default=None,
                    help='specify the agent group to get the agents from')
+    p.add_argument('--agent-group-name', default=None,
+                   help=('specify the agent group to get the agents from '
+                         '(ignored if --agent-group-id is used)'))
     args = p.parse_args()
 
     # int the api
     tio = TenableIO(ACCESS_KEY, SECRET_KEY)
 
+    # obtain group id (gid) and group name (g_name)
     gid = args.agent_group_id
-    if not args.agent_group_id:
-        # get and select the agent group
-        agent_groups = commons.get_agent_groups(tio)
-        g = commons.select_agent_group(agent_groups)
-        gid = str(g['id'])
+    g_name = args.agent_group_name
+    agent_groups = commons.get_agent_groups(tio)
+    if not gid:
+        if g_name:
+            for g in agent_groups:
+                if g['name'].lower() == g_name.lower():
+                    gid = str(g['id'])
+                    break
+            if not gid:
+                print(f'[E] Unable to find agent group with name {g_name}')
+                sys.exit(1)
+        else:
+            g = commons.select_agent_group(agent_groups)
+            gid = str(g['id'])
+            g_name = str(g['name'])
+    else:
+        if g_name:
+            print(f'[W] Switch "--agent-group-name {g_name}" will be ignored')
+            g_name = None
+        for g in agent_groups:
+            if str(g['id']).lower() == gid.lower():
+                g_name = str(g['name'])
+                break
+        if not g_name:
+            print(f'[E] Unable to find agent group with id {gid}')
+            sys.exit(1)
+
+    print(f'[*] Looking info agent group: {g_name} ({gid})')
 
     # filter agents
     now = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
