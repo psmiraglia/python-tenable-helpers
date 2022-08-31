@@ -50,7 +50,7 @@ def get_agent_groups(tio):
 def select_agent_group(agent_groups):
     idx = 1
     ag_size = len(agent_groups)
-    prompt = f'[<] Select the agent group ({idx}-{ag_size}): '
+    prompt = f'Select the agent group ({idx}-{ag_size}): '
 
     # build the menu
     groups = {}
@@ -88,3 +88,20 @@ def get_agents(tio, *filters):
     except Exception as e:
         LOG.error(e)
     return agents
+
+#
+# Tags
+#
+
+
+def create_tag(tio, category, name, delete_if_exists=False):
+    description = 'Created via API'
+    if delete_if_exists:
+        tag = next(tio.tags.list(('category_name', 'eq', category),
+                                 ('value', 'eq', name),
+                                 limit=1), None)
+        if tag:
+            tio.tags.delete(tag.get('uuid'))
+    tag = tio.tags.create(category, name, description=description,
+                          category_description=description)
+    return tag
