@@ -43,10 +43,11 @@ def g2t(g_name, g_id):
         g_id = g.get('id')
 
     # get agents from group
-    agents = tio.agent_groups.details(g_id)['agents']
+    _agents = tio.agent_groups.details(g_id)['agents']
+    agents = [a for a in _agents]
 
     # get assets from agents
-    assets = tio.v3.explore.assets.search_all(filter={
+    _assets = tio.v3.explore.assets.search_all(filter={
         'and': [
             {
                 'property': 'host_name',
@@ -60,12 +61,19 @@ def g2t(g_name, g_id):
             }
         ]
     })
+    assets = [a for a in _assets]
 
     # create tag
     tag = commons.create_tag(tio, 'AgentGroup', g_name, True)
+    tag_name = f'{tag.get("category_name")}:{tag.get("value")}'
+    tag_id = tag.get('uuid')
+    print(f'(*) Tag "{tag_name}" with ID "{tag_id}" has been created')
 
     # assign tag
-    tio.tags.assign([a.get('id') for a in assets], [tag.get('uuid')])
+    tio.tags.assign([a.get('id') for a in assets], [tag_id])
+    print(f'(*) Tag "{tag_name}" has been assigned to...')
+    for name in [a.get('name') for a in assets]:
+        print(f'(+) {name}')
 
 
 if __name__ == '__main__':
