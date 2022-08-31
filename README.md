@@ -62,6 +62,34 @@ $ ./agents-info.py --never-connect --plugins-never-update
 [plugins_never_update] Result saved: plugins_never_update.123456.20220720180812.csv
 ~~~
 
+## group2tag.py
+
+Create tag from agent group and assign it to related assets
+
+~~~.bash
+$ ./group2tag.py --help
+Usage: group2tag.py [OPTIONS]
+
+Options:
+  -n, --name TEXT  Name of the agent group
+  -i, --id TEXT    ID of the agent group
+  --help           Show this message and exit.
+~~~
+
+Examples of execution
+
+~~~.bash
+$ ./group2tag.py
+[1] Server (id: 112233)
+[2] Client (id: 112234)
+[3] DMZ (id: 112235)
+Select the agent group (1-3): 3
+~~~
+
+~~~.bash
+$ ./group2tag.py --name DMZ --id 112235
+~~~
+
 ## References
 
 * [pyTenable](https://pytenable.readthedocs.io/en/stable/)
