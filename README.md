@@ -85,22 +85,18 @@ $ ./group2tag.py
 [3] DMZ (id: 112235)
 Select the agent group (1-3): 3
 (*) Tag "AgentGroup:DMZ" with ID "00000000-0000-0000-0000-000000000000" has been created
-(*) Tag "AgentGroup:DMZ" has been assigned to...
-(+) sql01
-(+) sql02
-(+) webserver12
-(+) webserver24
+(*) Got 3 over 3 agents
+(*) Got 3 assets
+(*) Tag "AgentGroup:DMZ" has been assigned to sql01|sql02|webserver12
 
 ~~~
 
 ~~~.bash
 $ ./group2tag.py --name DMZ --id 112235
 (*) Tag "AgentGroup:DMZ" with ID "00000000-0000-0000-0000-000000000000" has been created
-(*) Tag "AgentGroup:DMZ" has been assigned to...
-(+) sql01
-(+) sql02
-(+) webserver12
-(+) webserver24
+(*) Got 3 over 3 agents
+(*) Got 3 assets
+(*) Tag "AgentGroup:DMZ" has been assigned to sql01|sql02|webserver12
 ~~~
 
 ## References
