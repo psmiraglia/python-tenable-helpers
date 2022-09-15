@@ -99,6 +99,49 @@ $ ./group2tag.py --name DMZ --id 112235
 (*) Tag "AgentGroup:DMZ" has been assigned to sql01|sql02|webserver12
 ~~~
 
+## po2tag.py
+
+Crate tag by parsing a plugin output and assign it to related assets
+
+~~~.bash
+$ ./po2tag.py --help
+Usage: po2tag.py [OPTIONS]
+
+Options:
+  -c, --tag-category TEXT  Name of the tag category  [required]
+  -n, --tag-name TEXT      Name of the tag  [required]
+  -e, --regex TEXT         Regex to parse the plugin output  [required]
+  --regex-negative         Use regex as negative
+  -f, --filters TEXT       Assets filters  [required]
+  --help                   Show this message and exit.
+~~~
+
+Examples of execution
+
+~~~.bash
+$ ./po2tag.py -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt
+(*) Filter: {"and": [{"property": "severity", "operator": "eq", "value": [0]}, {"property": "definition.id", "operator": "eq", "value": ["20811"]}]}
+(*) Regex: ^mozilla firefox.*\[version 104(\.\d{1,})*\].*$
+(*) Tag "Firefox:104.x" with ID "f03fd7f9-ea0b-47a9-a0fb-48435d265e8a" has been created
+(*) Tag "Firefox:104.x" has been assigned to cli1
+~~~
+
+~~~.bash
+$ ./po2tag.py -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex '^mozilla firefox.*\[version 104(\.\d{1,})*\].*$'
+(*) Filter: {"and": [{"property": "severity", "operator": "eq", "value": [0]}, {"property": "definition.id", "operator": "eq", "value": ["20811"]}]}
+(*) Regex: ^mozilla firefox.*\[version 104(\.\d{1,})*\].*$
+(*) Tag "Firefox:104.x" with ID "f03fd7f9-ea0b-47a9-a0fb-48435d265e8a" has been created
+(*) Tag "Firefox:104.x" has been assigned to cli1
+~~~
+
+~~~.bash
+$ ./po2tag.py -c 'Firefox' -n 'NOT-104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt --regex-negative
+(*) Filter: {"and": [{"property": "severity", "operator": "eq", "value": [0]}, {"property": "definition.id", "operator": "eq", "value": ["20811"]}]}
+(*) Regex: ^mozilla firefox.*\[version 104(\.\d{1,})*\].*$
+(*) Tag "Firefox:104.x" with ID "f03fd7f9-ea0b-47a9-a0fb-48435d265e8a" has been created
+(*) Tag "Firefox:104.x" has been assigned to cli12|cli23
+~~~
+
 ## References
 
 * [pyTenable](https://pytenable.readthedocs.io/en/stable/)
