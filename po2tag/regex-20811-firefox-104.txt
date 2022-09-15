@@ -1,0 +1,1 @@
+^mozilla firefox.*\[version 104(\.\d{1,})*\].*$

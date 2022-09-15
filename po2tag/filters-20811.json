@@ -1,0 +1,14 @@
+{
+  "and": [
+    {
+      "property": "severity",
+      "operator": "eq",
+      "value": [0]
+    },
+    {
+      "property": "definition.id",
+      "operator": "eq",
+      "value": ["20811"]
+    }
+  ]
+}
