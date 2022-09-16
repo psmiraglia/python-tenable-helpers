@@ -20,12 +20,19 @@ SOFTWARE.
 """
 
 import json
+import os
+import sys
 
 import click
 from tenable.io import TenableIO
 
-import commons
-from keys import ACCESS_KEY, SECRET_KEY
+from tenable_helpers import commons
+
+try:
+    from keys import ACCESS_KEY, SECRET_KEY
+except Exception as e:  # noqa
+    ACCESS_KEY = os.getenv('ACCESS_KEY')
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 def _get_agents(tio, g_id, limit, offset):
@@ -90,7 +97,16 @@ def _assign_tag(tio, tag_id, tag_name, assets):
               default=None, help='Name of the agent group')
 @click.option('-i', '--id', 'g_id',
               default=None, help='ID of the agent group')
-def g2t(g_name, g_id):
+def group2tag(g_name, g_id):
+    # check credentials
+    if not ACCESS_KEY:
+        print('(!) ACCESS_KEY must be defined')
+        sys.exit(1)
+
+    if not SECRET_KEY:
+        print('(!) SECRET_KEY must be defined')
+        sys.exit(1)
+
     # init the API
     tio = TenableIO(ACCESS_KEY, SECRET_KEY)
 
@@ -130,7 +146,3 @@ def g2t(g_name, g_id):
         print(f'(*) Got {got} over {tot} agents')
         assets = _get_assets(tio, agents)
         _assign_tag(tio, tag_id, tag_name, assets)
-
-
-if __name__ == '__main__':
-    g2t()

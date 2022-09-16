@@ -28,8 +28,13 @@ import sys
 import click
 from tenable.io import TenableIO
 
-import commons
-from keys import ACCESS_KEY, SECRET_KEY
+from tenable_helpers import commons
+
+try:
+    from keys import ACCESS_KEY, SECRET_KEY
+except Exception as e:  # noqa
+    ACCESS_KEY = os.getenv('ACCESS_KEY')
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
 # setup logging
 LOG = logging.getLogger(__name__)
@@ -174,6 +179,15 @@ def build_regex(regex_str):
 @click.option('-f', '--filters', 'filters_str', default=None,
               help='Assets filters', required=True)
 def po2tag(t_category, t_name, regex_str, regex_negative, filters_str):
+    # check credentials
+    if not ACCESS_KEY:
+        print('(!) ACCESS_KEY must be defined')
+        sys.exit(1)
+
+    if not SECRET_KEY:
+        print('(!) SECRET_KEY must be defined')
+        sys.exit(1)
+
     # build filters and regex
     filters = build_filters(filters_str)
     regex = build_regex(regex_str)
@@ -190,7 +204,3 @@ def po2tag(t_category, t_name, regex_str, regex_negative, filters_str):
     # find assets and assign tag
     find_assets_and_assign_tag(tio, tag_name, tag_id, filters, regex,
                                regex_negative)
-
-
-if __name__ == '__main__':
-    po2tag()

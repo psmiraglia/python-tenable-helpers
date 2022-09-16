@@ -22,13 +22,19 @@ SOFTWARE.
 import argparse
 import datetime
 import logging
+import os
 import sys
 import time
 
 from tenable.io import TenableIO
 
 import commons
-from keys import ACCESS_KEY, SECRET_KEY
+
+try:
+    from keys import ACCESS_KEY, SECRET_KEY
+except Exception as e:  # noqa
+    ACCESS_KEY = os.getenv('ACCESS_KEY')
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
 logging.basicConfig(level=logging.INFO)
 
@@ -70,6 +76,14 @@ f = {
 
 
 if __name__ == '__main__':
+    if not ACCESS_KEY:
+        print('(!) ACCESS_KEY must be defined')
+        sys.exit(1)
+
+    if not SECRET_KEY:
+        print('(!) SECRET_KEY must be defined')
+        sys.exit(1)
+
     p = argparse.ArgumentParser()
     p.add_argument('--never-connect', action='store_true',
                    help='list agents that never connected after the linking')
