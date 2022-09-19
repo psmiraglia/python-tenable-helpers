@@ -13,7 +13,46 @@ SECRET_KEY = 'HERE YOUR SECRET KEY'
 EOF
 ~~~
 
-## agents-info.py
+Alternatively, you can set them as environment variables
+
+~~~.bash
+$ export ACCESS_KEY="HERE YOUR ACCESS KEY"
+$ export SECRET_KEY="HERE YOUR SECRET KEY"
+~~~
+
+If you use Docker, set them in the environment file
+
+~~~.bash
+$ cat <<EOF > Docker.env
+ACCESS_KEY=HERE YOUR ACCESS KEY
+SECRET_KEY=HERE YOUR SECRET KEY
+EOF
+~~~
+
+## How to install
+
+You can use a Python virtual environment
+
+~~~.bash
+$ virtualenv -p python3 .venv
+$ . .venv/bin/activate
+$ pip install -r requirements.txt
+$ pip install -e .
+~~~
+
+or build the Docker image
+
+~~~.bash
+$ make docker
+
+# or
+
+$ docker build --tag psmiraglia/tenable-helpers .
+~~~
+
+## How to use
+
+### agents-info.py (it will be soon removed)
 
 Obtain information about linked agents.
 
@@ -62,12 +101,12 @@ $ ./agents-info.py --never-connect --plugins-never-update
 [plugins_never_update] Result saved: plugins_never_update.123456.20220720180812.csv
 ~~~
 
-## group2tag.py
+### group2tag
 
 Create tag from agent group and assign it to related assets
 
 ~~~.bash
-$ ./group2tag.py --help
+$ group2tag --help
 Usage: group2tag.py [OPTIONS]
 
 Options:
@@ -79,7 +118,7 @@ Options:
 Examples of execution
 
 ~~~.bash
-$ ./group2tag.py
+$ group2tag
 [1] Server (id: 112233)
 [2] Client (id: 112234)
 [3] DMZ (id: 112235)
@@ -92,19 +131,19 @@ Select the agent group (1-3): 3
 ~~~
 
 ~~~.bash
-$ ./group2tag.py --name DMZ --id 112235
+$ docker run -ti --rm --env-file Docker.env psmiraglia/tenable-helpers group2tag --name DMZ --id 112235
 (*) Tag "AgentGroup:DMZ" with ID "00000000-0000-0000-0000-000000000000" has been created
 (*) Got 3 over 3 agents
 (*) Got 3 assets
 (*) Tag "AgentGroup:DMZ" has been assigned to sql01|sql02|webserver12
 ~~~
 
-## po2tag.py
+### po2tag
 
-Crate tag by parsing a plugin output and assign it to related assets
+Create tag by parsing a plugin output and assign it to related assets
 
 ~~~.bash
-$ ./po2tag.py --help
+$ po2tag --help
 Usage: po2tag.py [OPTIONS]
 
 Options:
@@ -119,7 +158,7 @@ Options:
 Examples of execution
 
 ~~~.bash
-$ ./po2tag.py -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt
+$ po2tag -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt
 (*) Filter: {"and": [{"property": "severity", "operator": "eq", "value": [0]}, {"property": "definition.id", "operator": "eq", "value": ["20811"]}]}
 (*) Regex: ^mozilla firefox.*\[version 104(\.\d{1,})*\].*$
 (*) Tag "Firefox:104.x" with ID "f03fd7f9-ea0b-47a9-a0fb-48435d265e8a" has been created
@@ -127,7 +166,7 @@ $ ./po2tag.py -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex @po2
 ~~~
 
 ~~~.bash
-$ ./po2tag.py -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex '^mozilla firefox.*\[version 104(\.\d{1,})*\].*$'
+$ docker run -ti --rm -v "$(pwd)/po2tag:/data:ro" --env-file Docker.env psmiraglia/tenable-helpers po2tag -c 'Firefox' -n '104.x' -f @/data/filters-20811.json --regex '^mozilla firefox.*\[version 104(\.\d{1,})*\].*$'
 (*) Filter: {"and": [{"property": "severity", "operator": "eq", "value": [0]}, {"property": "definition.id", "operator": "eq", "value": ["20811"]}]}
 (*) Regex: ^mozilla firefox.*\[version 104(\.\d{1,})*\].*$
 (*) Tag "Firefox:104.x" with ID "f03fd7f9-ea0b-47a9-a0fb-48435d265e8a" has been created
@@ -135,7 +174,7 @@ $ ./po2tag.py -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex '^mo
 ~~~
 
 ~~~.bash
-$ ./po2tag.py -c 'Firefox' -n 'NOT-104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt --regex-negative
+$ po2tag -c 'Firefox' -n 'NOT-104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt --regex-negative
 (*) Filter: {"and": [{"property": "severity", "operator": "eq", "value": [0]}, {"property": "definition.id", "operator": "eq", "value": ["20811"]}]}
 (*) Regex: ^mozilla firefox.*\[version 104(\.\d{1,})*\].*$
 (*) Tag "Firefox:104.x" with ID "f03fd7f9-ea0b-47a9-a0fb-48435d265e8a" has been created
