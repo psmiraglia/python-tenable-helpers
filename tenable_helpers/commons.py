@@ -18,6 +18,7 @@ SOFTWARE.
 """
 
 import csv
+import json
 import logging
 
 LOG = logging.getLogger(__name__)
@@ -94,14 +95,82 @@ def get_agents(tio, *filters):
 #
 
 
-def create_tag(tio, category, name, delete_if_exists=False):
-    description = 'Created via API'
-    if delete_if_exists:
-        tag = next(tio.tags.list(('category_name', 'eq', category),
-                                 ('value', 'eq', name),
-                                 limit=1), None)
-        if tag:
-            tio.tags.delete(tag.get('uuid'))
-    tag = tio.tags.create(category, name, description=description,
-                          category_description=description)
+def create_tag(tio, category, name, delete_assignments=False):
+    def _cb(tio, assets, tag_uuid):
+        _assets_id = [a.get('id') for a in assets]
+        _assets_name = [a.get('name') for a in assets]
+        _tags = [tag_uuid]
+        print(f'(*) Tag "{category}:{name}" has been removed from {"|".join(_assets_name)}')  # noqa
+        tio.tags.unassign(_assets_id, _tags)
+
+    tag = next(tio.tags.list(('category_name', 'eq', category),
+                             ('value', 'eq', name),
+                             limit=1), None)
+    if tag:
+        if delete_assignments:
+            filters = {'and': [{'property': 'tags',
+                                'operator': 'eq',
+                                'value': [tag.get('uuid')]}]}
+            find_assets(tio, filters, _cb, tag.get('uuid'))
+        else:
+            print(f'(!) Tag {category}:{name} already exists')
+    else:
+        description = 'Created via API'
+        tag = tio.tags.create(category, name, description=description,
+                              category_description=description)
+
     return tag
+
+
+#
+# Assets
+#
+
+def find_assets(tio, filters, cb, *args, **kwargs):
+    assets = []
+
+    limit = 100
+    sort = []
+    fields = []
+    pagination = None
+    token = None
+
+    # first call
+    res = tio.v3.explore.assets.search_all(filter=filters,
+                                           sort=sort,
+                                           fields=fields,
+                                           limit=limit,
+                                           return_resp=True)
+    data = json.loads(res.text)
+    _assets = data.get('assets', [])
+    if len(_assets) > 0:
+        if cb:
+            cb(tio, _assets, *args, **kwargs)
+        assets += _assets
+    pagination = data.get('pagination')
+    if pagination:
+        token = pagination.get('next')
+    else:
+        token = None
+
+    # get other pages of results (if any)
+    while token:
+        res = tio.v3.explore.assets.search_all(filter=filters,
+                                               sort=sort,
+                                               fields=fields,
+                                               limit=limit,
+                                               return_resp=True,
+                                               next=token)
+        data = json.loads(res.text)
+        _assets = data.get('assets', [])
+        if len(_assets) > 0:
+            if cb:
+                cb(tio, _assets, *args, **kwargs)
+            assets += _assets
+        pagination = data.get('pagination')
+        if pagination:
+            token = pagination.get('next')
+        else:
+            token = None
+
+    return assets
