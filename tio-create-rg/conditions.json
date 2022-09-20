@@ -1,0 +1,22 @@
+{
+  "and": [
+    {
+      "id": "severity",
+      "operator": "neq",
+      "value": [0],
+      "isFilterSet": true
+    },
+    {
+      "id": "state",
+      "operator": "neq",
+      "value": ["FIXED"],
+      "isFilterSet": true
+    },
+    {
+      "id": "definition.name",
+      "operator": "wc",
+      "value": ["*adobe reader*"],
+      "isFilterSet": true
+    }
+  ]    
+}

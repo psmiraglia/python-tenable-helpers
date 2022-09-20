@@ -20,6 +20,8 @@ SOFTWARE.
 import csv
 import json
 import logging
+import os
+import sys
 
 LOG = logging.getLogger(__name__)
 
@@ -33,6 +35,31 @@ def as_csv(fd, headline, rows):
     w.writerow(headline)
     for row in rows:
         w.writerow(row)
+
+
+def str_to_json(json_str):
+    f = {}
+    try:
+        if json_str.startswith('@'):
+            # load filters from file
+            ffile = json_str[1:]
+            if not os.path.exists(ffile):
+                LOG.error(f'{ffile} does not exist')
+            else:
+                LOG.debug(f'Load JSON from file ({ffile})')
+                with open(ffile, 'r') as fp:
+                    f = json.load(fp)
+                    fp.close()
+        else:
+            # load filters from string
+            LOG.debug(f'Load JSON from string ({json_str})')
+            f = json.loads(json_str)
+    except Exception as e:
+        LOG.error(f'Unable to load JSON string: {e}')
+        sys.exit(1)
+
+    print(f'(*) JSON: {json.dumps(f)}')
+    return f
 
 #
 # Agent Group
