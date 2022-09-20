@@ -1,6 +1,9 @@
 REPO := psmiraglia
 VERSION := 0.1.0a
 
+install:
+	pip install -e .
+
 style: flake8 isort-diff
 
 flake8:
