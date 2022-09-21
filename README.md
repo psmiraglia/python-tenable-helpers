@@ -181,6 +181,49 @@ $ po2tag -c 'Firefox' -n 'NOT-104.x' -f @po2tag/filters-20811.json --regex @po2t
 (*) Tag "Firefox:104.x" has been assigned to cli12|cli23
 ~~~
 
+### tio-create-rg
+
+Create remediation goals
+
+~~~.bash
+$ tio-create-rg --help
+Usage: tio-create-rg [OPTIONS]
+
+Options:
+  -n, --name TEXT         Name of the remediation goal  [required]
+  -d, --description TEXT  Description of the remediation goal  [required]
+  -c, --conditions TEXT   Conditions of the remediation goal  [required]
+  -S, --start-date TEXT   Start date of the remediation goal (YYYY-MM-DD)
+                          [required]
+  -D, --due-date TEXT     Due date of the remediation goal (YYYY-MM-DD)
+                          [required]
+  --help                  Show this message and exit.
+
+~~~
+
+Examples of usage
+
+~~~.bash
+$ tio-create-rg --name MyRemediationGoal --description @tio-create-rg/description.txt -c @tio-create-rg/conditions.json -S '2022-09-21' -D '2022-09-25'
+(*) Load text from file: tio-create-rg/description.txt
+(*) JSON: {"and": [{"id": "severity", "operator": "neq", "value": [0], "isFilterSet": true}, {"id": "state", "operator": "neq", "value": ["FIXED"], "isFilterSet": true}, {"id": "definition.name", "operator": "wc", "value": ["*adobe reader*"], "isFilterSet": true}]}
+(*) Remediation goal has been created: MyRemediationGoal (1a322a5c-d92d-428e-9353-510953d45ac9)
+~~~
+
+~~~.bash
+$ tio-create-rg --name MyRemediationGoal --description "My inline description" -c @tio-create-rg/conditions.json -S '2022-09-21' -D '2022-09-25'
+(*) JSON: {"and": [{"id": "severity", "operator": "neq", "value": [0], "isFilterSet": true}, {"id": "state", "operator": "neq", "value": ["FIXED"], "isFilterSet": true}, {"id": "definition.name", "operator": "wc", "value": ["*adobe reader*"], "isFilterSet": true}]}
+(*) Remediation goal has been created: MyRemediationGoal (1a322a5c-d92d-428e-9353-510953d45ac9)
+~~~
+
+~~~.bash
+$ tio-create-rg --name MyRemediationGoal --description @tio-create-rg/description.txt -c '{"and": [{"id": "severity", "operator": "neq", "value": [0], "isFilterSet": true}, {"id": "state", "operator": "neq", "value": ["FIXED"], "isFilterSet": true}, {"id": "definition.name", "operator": "wc", "value": ["*adobe reader*"], "isFilterSet": true}]}' -S '2022-09-21' -D '2022-09-25'
+(*) Load text from file: description.txt
+(*) JSON: {"and": [{"id": "severity", "operator": "neq", "value": [0], "isFilterSet": true}, {"id": "state", "operator": "neq", "value": ["FIXED"], "isFilterSet": true}, {"id": "definition.name", "operator": "wc", "value": ["*adobe reader*"], "isFilterSet": true}]}
+(*) Remediation goal has been created: MyRemediationGoal (1a322a5c-d92d-428e-9353-510953d45ac9)
+~~~
+
+
 ## References
 
 * [pyTenable](https://pytenable.readthedocs.io/en/stable/)
