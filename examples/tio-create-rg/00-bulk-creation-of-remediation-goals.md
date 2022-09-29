@@ -1,4 +1,4 @@
-# tio-create-rg
+# Bulk creation of remediation goals
 
 It's time to fix the findings identified by Tenable so, we would like to track the progress of our patching.
 
