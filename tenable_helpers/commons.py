@@ -82,7 +82,7 @@ def select_agent_group(agent_groups):
 
     # build the menu
     groups = {}
-    for g in agent_groups:
+    for g in sorted(agent_groups, key=lambda d: d['name']):
         groups[str(idx)] = g
         data = f'{g["name"]} (id: {g["id"]})'
         if ag_size < 10:
