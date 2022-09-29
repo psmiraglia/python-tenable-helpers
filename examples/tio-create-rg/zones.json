@@ -1,0 +1,38 @@
+{
+  "america": {
+    "label": "America",
+    "rings": {
+      "tr": {
+        "label": "TestRing",
+        "tags": [
+          "74eab3a7-f77a-40d0-978e-e47ec1a49d09",
+          "5ca6bf8e-0eba-41ec-a7db-308e0e7ecc31"
+        ]
+      },
+      "all": {
+        "label": "All",
+        "tags": [
+          "f2e1d6c4-c908-4e2d-89b6-aaf165c7b320"
+        ]
+      }
+    }
+  },
+  "europe": {
+    "label": "Europe",
+    "rings": {
+      "tr": {
+        "label": "TestRing",
+        "tags": [
+          "6bc72610-602b-45df-bbc5-bb28ff17dbf3",
+          "af42dcf1-9004-4abb-9b81-92234c3201dd"
+        ]
+      },
+      "all": {
+        "label": "All",
+        "tags": [
+          "d9fdc4fc-9fba-4638-bbba-42762bceb8a2"
+        ]
+      }
+    }
+  }
+}
