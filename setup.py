@@ -41,9 +41,9 @@ setup(
     install_requires=get_requirements(),
     entry_points={
         'console_scripts': [
-            'po2tag = tenable_helpers.scripts.po2tag:po2tag',
-            'group2tag = tenable_helpers.scripts.group2tag:group2tag',
             'tio-create-rg = tenable_helpers.scripts.tio_create_rg:tio_create_rg',  # noqa
+            'tio-group2tag = tenable_helpers.scripts.tio_group2tag:tio_group2tag',  # noqa
+            'tio-po2tag = tenable_helpers.scripts.tio_po2tag:tio_po2tag',
         ],
     }
 )

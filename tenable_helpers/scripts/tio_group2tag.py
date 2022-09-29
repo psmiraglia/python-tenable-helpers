@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 Copyright 2022 Paolo Smiraglia <paolo.smiraglia@gmail.com>
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -97,7 +95,7 @@ def _assign_tag(tio, tag_id, tag_name, assets):
               default=None, help='Name of the agent group')
 @click.option('-i', '--id', 'g_id',
               default=None, help='ID of the agent group')
-def group2tag(g_name, g_id):
+def tio_group2tag(g_name, g_id):
     # check credentials
     if not ACCESS_KEY:
         print('(!) ACCESS_KEY must be defined')

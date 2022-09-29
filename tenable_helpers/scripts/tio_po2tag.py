@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 Copyright 2022 Paolo Smiraglia <paolo.smiraglia@gmail.com>
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -178,7 +176,7 @@ def build_regex(regex_str):
               help='Use regex as negative')
 @click.option('-f', '--filters', 'filters_str', default=None,
               help='Assets filters', required=True)
-def po2tag(t_category, t_name, regex_str, regex_negative, filters_str):
+def tio_po2tag(t_category, t_name, regex_str, regex_negative, filters_str):
     # check credentials
     if not ACCESS_KEY:
         print('(!) ACCESS_KEY must be defined')

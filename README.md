@@ -101,13 +101,13 @@ $ ./agents-info.py --never-connect --plugins-never-update
 [plugins_never_update] Result saved: plugins_never_update.123456.20220720180812.csv
 ~~~
 
-### group2tag
+### tio-group2tag
 
 Create tag from agent group and assign it to related assets
 
 ~~~.bash
-$ group2tag --help
-Usage: group2tag.py [OPTIONS]
+$ tio-group2tag --help
+Usage: tio-group2tag [OPTIONS]
 
 Options:
   -n, --name TEXT  Name of the agent group
@@ -118,7 +118,7 @@ Options:
 Examples of execution
 
 ~~~.bash
-$ group2tag
+$ tio-group2tag
 [1] Server (id: 112233)
 [2] Client (id: 112234)
 [3] DMZ (id: 112235)
@@ -131,20 +131,20 @@ Select the agent group (1-3): 3
 ~~~
 
 ~~~.bash
-$ docker run -ti --rm --env-file Docker.env psmiraglia/tenable-helpers group2tag --name DMZ --id 112235
+$ docker run -ti --rm --env-file Docker.env psmiraglia/tenable-helpers tio-group2tag --name DMZ --id 112235
 (*) Tag "AgentGroup:DMZ" with ID "00000000-0000-0000-0000-000000000000" has been created
 (*) Got 3 over 3 agents
 (*) Got 3 assets
 (*) Tag "AgentGroup:DMZ" has been assigned to sql01|sql02|webserver12
 ~~~
 
-### po2tag
+### tio-po2tag
 
 Create tag by parsing a plugin output and assign it to related assets
 
 ~~~.bash
-$ po2tag --help
-Usage: po2tag.py [OPTIONS]
+$ tio-po2tag --help
+Usage: tio-po2tag [OPTIONS]
 
 Options:
   -c, --tag-category TEXT  Name of the tag category  [required]
@@ -158,7 +158,7 @@ Options:
 Examples of execution
 
 ~~~.bash
-$ po2tag -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt
+$ tio-po2tag -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt
 (*) Filter: {"and": [{"property": "severity", "operator": "eq", "value": [0]}, {"property": "definition.id", "operator": "eq", "value": ["20811"]}]}
 (*) Regex: ^mozilla firefox.*\[version 104(\.\d{1,})*\].*$
 (*) Tag "Firefox:104.x" with ID "f03fd7f9-ea0b-47a9-a0fb-48435d265e8a" has been created
@@ -166,7 +166,7 @@ $ po2tag -c 'Firefox' -n '104.x' -f @po2tag/filters-20811.json --regex @po2tag/r
 ~~~
 
 ~~~.bash
-$ docker run -ti --rm -v "$(pwd)/po2tag:/data:ro" --env-file Docker.env psmiraglia/tenable-helpers po2tag -c 'Firefox' -n '104.x' -f @/data/filters-20811.json --regex '^mozilla firefox.*\[version 104(\.\d{1,})*\].*$'
+$ docker run -ti --rm -v "$(pwd)/po2tag:/data:ro" --env-file Docker.env psmiraglia/tenable-helpers tio-po2tag -c 'Firefox' -n '104.x' -f @/data/filters-20811.json --regex '^mozilla firefox.*\[version 104(\.\d{1,})*\].*$'
 (*) Filter: {"and": [{"property": "severity", "operator": "eq", "value": [0]}, {"property": "definition.id", "operator": "eq", "value": ["20811"]}]}
 (*) Regex: ^mozilla firefox.*\[version 104(\.\d{1,})*\].*$
 (*) Tag "Firefox:104.x" with ID "f03fd7f9-ea0b-47a9-a0fb-48435d265e8a" has been created
@@ -174,7 +174,7 @@ $ docker run -ti --rm -v "$(pwd)/po2tag:/data:ro" --env-file Docker.env psmiragl
 ~~~
 
 ~~~.bash
-$ po2tag -c 'Firefox' -n 'NOT-104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt --regex-negative
+$ tio-po2tag -c 'Firefox' -n 'NOT-104.x' -f @po2tag/filters-20811.json --regex @po2tag/regex-20811-firefox-104.txt --regex-negative
 (*) Filter: {"and": [{"property": "severity", "operator": "eq", "value": [0]}, {"property": "definition.id", "operator": "eq", "value": ["20811"]}]}
 (*) Regex: ^mozilla firefox.*\[version 104(\.\d{1,})*\].*$
 (*) Tag "Firefox:104.x" with ID "f03fd7f9-ea0b-47a9-a0fb-48435d265e8a" has been created
