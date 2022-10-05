@@ -43,6 +43,7 @@ setup(
         'console_scripts': [
             'tio-create-rg = tenable_helpers.scripts.tio_create_rg:tio_create_rg',  # noqa
             'tio-group2tag = tenable_helpers.scripts.tio_group2tag:tio_group2tag',  # noqa
+            'tio-list-networks = tenable_helpers.scripts.tio_list_networks:tio_list_networks',  # noqa
             'tio-po2tag = tenable_helpers.scripts.tio_po2tag:tio_po2tag',
         ],
     }
