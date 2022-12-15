@@ -2,6 +2,11 @@
 
 Collection of Python scripts to interact with Tenable.io via API.
 
+* [tio-group2tag](#tio-group2tag)
+* [tio-po2tag](#tio-po2tag)
+* [tio-create-rg](#tio-create-rg)
+* [tio-list-networks](#tio-list-networks)
+
 ## How to set API credentials
 
 Obtain `ACCESS_KEY` and `SECRET_KEY` from the Tenable.io console and save them in `keys.py` file
@@ -223,6 +228,68 @@ $ tio-create-rg --name MyRemediationGoal --description @tio-create-rg/descriptio
 (*) Remediation goal has been created: MyRemediationGoal (1a322a5c-d92d-428e-9353-510953d45ac9)
 ~~~
 
+### tio-list-networks
+
+List all the defined networks (also the "deleted" ones).
+
+~~~.bash
+$ tio-list-networks --help
+Usage: tio-list-networks [OPTIONS]
+
+Options:
+  --as-json
+  --as-csv
+  --help     Show this message and exit.
+~~~
+
+Examples of usage
+
+~~~.bash
+$ tio-list-networks
+Name : APAC
+ID   : faa0a5e9-574c-4995-b18a-41c601bd8b72
+URL  : https://cloud.tenable.com/tio/app.html#/settings/sensors/nessus/networks/network-details/faa0a5e9-574c-4995-b18a-41c601bd8b72/settings
+
+Name : EMEA
+ID   : 315b8469-1049-4806-819f-d502cc28381b
+URL  : https://cloud.tenable.com/tio/app.html#/settings/sensors/nessus/networks/network-details/315b8469-1049-4806-819f-d502cc28381b/settings
+~~~
+
+~~~.bash
+$ tio-list-networks --as-json
+[
+  {
+    "assets_ttl_days": 180,
+    "created": 1665043358063,
+    "created_by": "c3e4a104-8957-41e3-93c0-9a54dc892b49",
+    "created_in_seconds": 1665043358,
+    "description": "",
+    "is_default": false,
+    "modified": 1665656055675,
+    "modified_by": "c3e4a104-8957-41e3-93c0-9a54dc892b49",
+    "modified_in_seconds": 1665656055,
+    "name": "APAC",
+    "owner_uuid": "c3e4a104-8957-41e3-93c0-9a54dc892b49",
+    "scanner_count": 5,
+    "uuid": "faa0a5e9-574c-4995-b18a-41c601bd8b72"
+  },
+  {
+    "assets_ttl_days": 180,
+    "created": 1665043415366,
+    "created_by": "c3e4a104-8957-41e3-93c0-9a54dc892b49",
+    "created_in_seconds": 1665043415,
+    "description": "",
+    "is_default": false,
+    "modified": 1665656062571,
+    "modified_by": "c3e4a104-8957-41e3-93c0-9a54dc892b49",
+    "modified_in_seconds": 1665656062,
+    "name": "EMEA",
+    "owner_uuid": "c3e4a104-8957-41e3-93c0-9a54dc892b49",
+    "scanner_count": 1,
+    "uuid": "315b8469-1049-4806-819f-d502cc28381b"
+  }
+] 
+~~~
 
 ## References
 
